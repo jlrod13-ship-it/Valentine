@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine?</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Screen 1: Proposal */
+    #screen1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffc3e1 0%, #ffb3d9 50%, #ff9ec7 100%);
+      padding: 20px;
+      position: relative;
+    }
+
+    #screen1.hidden {
+      display: none;
+    }
+
+    .heart-container {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .big-heart {
+      width: 400px;
+      height: 400px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+    }
+
+    .big-heart svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .heart-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      font-size: 36px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      padding: 20px;
+      max-width: 320px;
+    }
+
+    .button-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    button:focus {
+      outline: 3px solid rgba(255,255,255,0.6);
+      outline-offset: 2px;
+    }
+
+    #noBtn {
+      padding: 12px 24px;
+      background: #e0e0e0;
+      color: #666;
+      font-size: 16px;
+    }
+
+    #yesBtn {
+      padding: 18px 40px;
+      background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%);
+      color: white;
+      font-size: 22px;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    #yesBtn.bouncing {
+      animation: bounce 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1) rotate(5deg); }
+    }
+
+    /* Rejection Screen */
+    #rejectionScreen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffc3e1 0%, #ffb3d9 50%, #ff9ec7 100%);
+      padding: 40px 20px;
+    }
+
+    #rejectionScreen.active {
+      display: flex;
+    }
+
+    .rejection-image {
+      max-width: 400px;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+
+    .rejection-text {
+      font-size: 28px;
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    .crossed-out {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .correction {
+      color: #ff1744;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+
+    #tryAgainBtn {
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%);
+      color: white;
+      font-size: 20px;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .captcha-modal {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+    }
+
+    .captcha-header {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .captcha-title {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .captcha-instruction {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .grid-tile {
+      position: relative;
+      aspect-ratio: 1;
+      cursor: pointer;
+      border: 2px solid #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .grid-tile:hover {
+      border-color: #1a73e8;
+    }
+
+    .grid-tile.selected {
+      border-color: #1a73e8;
+    }
+
+    .grid-tile img,
+    .grid-tile .placeholder {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+      color: #999;
+      font-size: 12px;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 24px;
+      height: 24px;
+      background: #1a73e8;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .grid-tile.selected .checkmark {
+      display: flex;
+    }
+
+    .captcha-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #verifyBtn {
+      padding: 10px 24px;
+      background: #1a73e8;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    #verifyBtn:disabled {
+      background: #e0e0e0;
+      color: #999;
+      cursor: not-allowed;
+    }
+
+    /* Screen 2: Final Message */
+    #screen2 {
+      display: none;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd4ea 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 40px 20px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #screen2.active {
+      display: flex;
+    }
+
+    /* Floral background pattern */
+    #screen2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.15;
+      background-image: 
+        radial-gradient(circle at 20% 20%, #ff1744 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, #ff1744 2px, transparent 2px),
+        radial-gradient(circle at 40% 60%, #ff6b9d 3px, transparent 3px),
+        radial-gradient(circle at 70% 30%, #ff6b9d 2px, transparent 2px),
+        radial-gradient(circle at 10% 70%, #ff1744 2px, transparent 2px),
+        radial-gradient(circle at 90% 40%, #ff1744 3px, transparent 3px);
+      background-size: 200px 200px, 200px 200px, 150px 150px, 180px 180px, 220px 220px, 160px 160px;
+      background-position: 0 0, 100px 100px, 50px 50px, 120px 80px, 30px 130px, 170px 40px;
+      z-index: 1;
+    }
+
+    .final-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .final-content h1 {
+      font-size: 42px;
+      color: #d81b60;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      font-weight: 700;
+    }
+
+    /* Heart-shaped photo slideshow */
+    .heart-photo-container {
+      width: 240px;
+      height: 240px;
+      margin: 0 auto 30px;
+      position: relative;
+      filter: drop-shadow(0 8px 20px rgba(216, 27, 96, 0.3));
+    }
+
+    .heart-photo-container svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Slideshow fade animation */
+    .slideshow-image {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slideshow-image.active {
+      opacity: 1;
+    }
+
+    .final-content p {
+      font-size: 20px;
+      color: #c2185b;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* Floating hearts animation */
+    .floating-heart {
+      position: absolute;
+      font-size: 24px;
+      animation: float 6s infinite ease-in-out;
+      z-index: 1;
+      opacity: 0.6;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+      50% { transform: translateY(-30px) rotate(10deg); opacity: 0.8; }
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .big-heart {
+        width: 280px;
+        height: 280px;
+      }
+
+      .heart-text {
+        font-size: 26px;
+        max-width: 220px;
+      }
+
+      #yesBtn {
+        padding: 14px 32px;
+        font-size: 20px;
+      }
+
+      .rejection-text {
+        font-size: 22px;
+      }
+
+      .rejection-image {
+        max-width: 320px;
+      }
+
+      .final-content h1 {
+        font-size: 32px;
+      }
+
+      .heart-photo-container {
+        width: 180px;
+        height: 180px;
+      }
+
+      .final-content p {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen 1: Proposal -->
+  <div id="screen1">
+    <div class="heart-container">
+      <div class="big-heart">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50,90 C50,90 10,60 10,35 C10,20 20,10 32,10 C40,10 45,15 50,22 C55,15 60,10 68,10 C80,10 90,20 90,35 C90,60 50,90 50,90 Z" 
+                fill="#ff1744" stroke="#d81b60" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="heart-text">Sydney, Will you be my valentine?</div>
+    </div>
+
+    <div class="button-row">
+      <button id="noBtn">No</button>
+      <button id="yesBtn">Yes</button>
+    </div>
+  </div>
+
+  <!-- Rejection Screen -->
+  <div id="rejectionScreen">
+    <!-- Replace "sad_image.jpg" with whatever you name your uploaded image -->
+    <img src="sad_image.jpg" alt="Sad" class="rejection-image">
+    
+    <div class="rejection-text">
+      I guess <span class="crossed-out">I</span><span class="correction">we</span> will just go kill <span class="crossed-out">myself</span><span class="correction">ourselves</span>
+    </div>
+    
+    <button id="tryAgainBtn">Try Again</button>
+  </div>
+
+  <!-- Modal: Captcha Challenge -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="captcha-modal" role="dialog" aria-labelledby="captchaTitle">
+      <div class="captcha-header">
+        <div class="captcha-title" id="captchaTitle">Verification Required</div>
+        <div class="captcha-instruction">
+          Select all the images with <strong>YOUR VALENTINE</strong>. Click verify once none are left.
+        </div>
+      </div>
+      <div class="image-grid" id="imageGrid">
+        <!-- Grid tiles generated by JS -->
+      </div>
+      <div class="captcha-footer">
+        <button id="verifyBtn" disabled>Verify</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 2: Final Message -->
+  <div id="screen2">
+    <!-- Floating hearts decoration -->
+    <div class="floating-heart" style="top: 10%; left: 10%; animation-delay: 0s;">💕</div>
+    <div class="floating-heart" style="top: 20%; right: 15%; animation-delay: 1s;">❤️</div>
+    <div class="floating-heart" style="bottom: 15%; left: 20%; animation-delay: 2s;">💗</div>
+    <div class="floating-heart" style="bottom: 25%; right: 10%; animation-delay: 3s;">💖</div>
+
+    <div class="final-content">
+      <h1>Happy Valentines Day</h1>
+      
+      <!-- Heart-shaped photo slideshow: Add your photos to SLIDESHOW_PHOTOS array below -->
+      <div class="heart-photo-container" id="heartSlideshow">
+        <!-- Slideshow generated by JavaScript -->
+      </div>
+
+      <p>You have successfully confirmed that you are the love of my life</p>
+    </div>
+  </div>
+
+  <script>
+    // ========== SLIDESHOW PHOTOS ==========
+    // Add all the photos you want in the heart slideshow here
+    // They will rotate automatically every 3 seconds
+    const SLIDESHOW_PHOTOS = [
+      "photo1.jpg",
+      "photo2.jpg",
+      "photo3.jpg",
+      // Add more photos here as needed
+    ];
+
+    // ========== PHOTO PLACEHOLDERS ==========
+    // To replace captcha images later, update the src property with actual file paths
+    // e.g., { id: 1, label: "Us 1", src: "img/us1.jpg" }
+    const PHOTOS = [
+      { id: 1, label: "Photo 1", src: null },
+      { id: 2, label: "Photo 2", src: null },
+      { id: 3, label: "Photo 3", src: null },
+      { id: 4, label: "Photo 4", src: null },
+      { id: 5, label: "Photo 5", src: null },
+      { id: 6, label: "Photo 6", src: null },
+      { id: 7, label: "Photo 7", src: null },
+      { id: 8, label: "Photo 8", src: null },
+      { id: 9, label: "Photo 9", src: null },
+    ];
+
+    // ========== STATE ==========
+    let bounceCount = 0;
+    const MAX_BOUNCES = 3;
+    let selectedTiles = new Set();
+    let currentSlideIndex = 0;
+    let slideshowInterval = null;
+
+    // ========== ELEMENTS ==========
+    const screen1 = document.getElementById('screen1');
+    const screen2 = document.getElementById('screen2');
+    const rejectionScreen = document.getElementById('rejectionScreen');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const tryAgainBtn = document.getElementById('tryAgainBtn');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const imageGrid = document.getElementById('imageGrid');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const heartSlideshow = document.getElementById('heartSlideshow');
+
+    // ========== SLIDESHOW LOGIC ==========
+    function initSlideshow() {
+      heartSlideshow.innerHTML = '';
+      
+      // Create SVG container for each photo
+      SLIDESHOW_PHOTOS.forEach((photoSrc, index) => {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 100 100');
+        svg.classList.add('slideshow-image');
+        if (index === 0) svg.classList.add('active');
+        
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        const clipPath = document.createElementNS('http://www.w3.org/2000/svg', 'clipPath');
+        clipPath.setAttribute('id', `heartClip${index}`);
+        
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M50,90 C50,90 10,60 10,35 C10,20 20,10 32,10 C40,10 45,15 50,22 C55,15 60,10 68,10 C80,10 90,20 90,35 C90,60 50,90 50,90 Z');
+        
+        clipPath.appendChild(path);
+        defs.appendChild(clipPath);
+        svg.appendChild(defs);
+        
+        const image = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        image.setAttribute('href', photoSrc);
+        image.setAttribute('x', '-25');
+        image.setAttribute('y', '-25');
+        image.setAttribute('width', '150');
+        image.setAttribute('height', '150');
+        image.setAttribute('clip-path', `url(#heartClip${index})`);
+        image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+        
+        svg.appendChild(image);
+        heartSlideshow.appendChild(svg);
+      });
+    }
+
+    function nextSlide() {
+      const slides = heartSlideshow.querySelectorAll('.slideshow-image');
+      slides[currentSlideIndex].classList.remove('active');
+      
+      currentSlideIndex = (currentSlideIndex + 1) % SLIDESHOW_PHOTOS.length;
+      slides[currentSlideIndex].classList.add('active');
+    }
+
+    function startSlideshow() {
+      // Change photo every 3 seconds
+      slideshowInterval = setInterval(nextSlide, 3000);
+    }
+
+    function stopSlideshow() {
+      if (slideshowInterval) {
+        clearInterval(slideshowInterval);
+        slideshowInterval = null;
+      }
+    }
+
+    // ========== YES BUTTON BOUNCE LOGIC ==========
+    function getRandomPosition() {
+      const padding = 80;
+      const btnWidth = yesBtn.offsetWidth;
+      const btnHeight = yesBtn.offsetHeight;
+      
+      const maxX = window.innerWidth - btnWidth - padding;
+      const maxY = window.innerHeight - btnHeight - padding;
+      
+      const x = Math.random() * (maxX - padding) + padding;
+      const y = Math.random() * (maxY - padding) + padding;
+      
+      return { x, y };
+    }
+
+    function bounceYesButton() {
+      if (bounceCount >= MAX_BOUNCES) return;
+      
+      bounceCount++;
+      const pos = getRandomPosition();
+      
+      yesBtn.style.position = 'fixed';
+      yesBtn.style.left = pos.x + 'px';
+      yesBtn.style.top = pos.y + 'px';
+      yesBtn.classList.add('bouncing');
+      
+      setTimeout(() => {
+        yesBtn.classList.remove('bouncing');
+      }, 500);
+
+      if (bounceCount >= MAX_BOUNCES) {
+        yesBtn.style.cursor = 'pointer';
+      }
+    }
+
+    // Desktop: mouseenter
+    yesBtn.addEventListener('mouseenter', (e) => {
+      if (bounceCount < MAX_BOUNCES) {
+        bounceYesButton();
+      }
+    });
+
+    // Mobile: touchstart
+    yesBtn.addEventListener('touchstart', (e) => {
+      if (bounceCount < MAX_BOUNCES) {
+        e.preventDefault();
+        bounceYesButton();
+      }
+    });
+
+    // Click Yes -> Show Modal
+    yesBtn.addEventListener('click', () => {
+      if (bounceCount >= MAX_BOUNCES) {
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        verifyBtn.focus();
+      }
+    });
+
+    // Click No -> Show Rejection Screen
+    noBtn.addEventListener('click', () => {
+      screen1.classList.add('hidden');
+      rejectionScreen.classList.add('active');
+    });
+
+    // Try Again -> Back to Screen 1
+    tryAgainBtn.addEventListener('click', () => {
+      rejectionScreen.classList.remove('active');
+      screen1.classList.remove('hidden');
+      // Reset yes button position
+      yesBtn.style.position = 'relative';
+      yesBtn.style.left = '';
+      yesBtn.style.top = '';
+      bounceCount = 0;
+    });
+
+    // ========== CAPTCHA MODAL ==========
+    function initCaptcha() {
+      imageGrid.innerHTML = '';
+      selectedTiles.clear();
+      
+      PHOTOS.forEach(photo => {
+        const tile = document.createElement('div');
+        tile.className = 'grid-tile';
+        tile.dataset.id = photo.id;
+        
+        if (photo.src) {
+          const img = document.createElement('img');
+          img.src = photo.src;
+          img.alt = photo.label;
+          tile.appendChild(img);
+        } else {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'placeholder';
+          placeholder.textContent = photo.label;
+          tile.appendChild(placeholder);
+        }
+        
+        const checkmark = document.createElement('div');
+        checkmark.className = 'checkmark';
+        checkmark.innerHTML = '✓';
+        tile.appendChild(checkmark);
+        
+        tile.addEventListener('click', () => toggleTile(tile, photo.id));
+        imageGrid.appendChild(tile);
+      });
+      
+      updateVerifyButton();
+    }
+
+    function toggleTile(tile, id) {
+      if (selectedTiles.has(id)) {
+        selectedTiles.delete(id);
+        tile.classList.remove('selected');
+      } else {
+        selectedTiles.add(id);
+        tile.classList.add('selected');
+      }
+      updateVerifyButton();
+    }
+
+    function updateVerifyButton() {
+      verifyBtn.disabled = selectedTiles.size === 0;
+    }
+
+    verifyBtn.addEventListener('click', () => {
+      if (selectedTiles.size > 0) {
+        closeCaptcha();
+        showFinalScreen();
+      }
+    });
+
+    function closeCaptcha() {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // ESC to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+        closeCaptcha();
+      }
+    });
+
+    // ========== FINAL SCREEN ==========
+    function showFinalScreen() {
+      screen1.classList.add('hidden');
+      rejectionScreen.classList.remove('active');
+      screen2.classList.add('active');
+      
+      // Start the slideshow when final screen appears
+      startSlideshow();
+    }
+
+    // ========== INIT ==========
+    initCaptcha();
+    initSlideshow();
+  </script>
+
+</body>
+</html>
