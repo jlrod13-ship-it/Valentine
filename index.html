@@ -352,14 +352,14 @@
 
     /* Photo slideshow */
     .photo-slideshow-container {
-      width: 400px;
-      max-width: 100%;
+      width: 450px;
+      max-width: 90%;
+      height: 340px;
       margin: 0 auto 30px;
       position: relative;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 8px 24px rgba(216, 27, 96, 0.3);
-      aspect-ratio: 4 / 3;
       background: #ffeef8;
     }
 
@@ -385,20 +385,6 @@
       color: #c2185b;
       line-height: 1.6;
       font-weight: 500;
-    }
-
-    /* Floating hearts animation */
-    .floating-heart {
-      position: absolute;
-      font-size: 24px;
-      animation: float 6s infinite ease-in-out;
-      z-index: 1;
-      opacity: 0.6;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
-      50% { transform: translateY(-30px) rotate(10deg); opacity: 0.8; }
     }
 
     /* Responsive */
@@ -431,7 +417,8 @@
       }
 
       .photo-slideshow-container {
-        width: 350px;
+        width: 320px;
+        height: 240px;
       }
 
       .final-content p {
@@ -492,12 +479,6 @@
 
   <!-- Screen 2: Final Message -->
   <div id="screen2">
-    <!-- Floating hearts decoration -->
-    <div class="floating-heart" style="top: 10%; left: 10%; animation-delay: 0s;">💕</div>
-    <div class="floating-heart" style="top: 20%; right: 15%; animation-delay: 1s;">❤️</div>
-    <div class="floating-heart" style="bottom: 15%; left: 20%; animation-delay: 2s;">💗</div>
-    <div class="floating-heart" style="bottom: 25%; right: 10%; animation-delay: 3s;">💖</div>
-
     <div class="final-content">
       <h1>Happy Valentines Day</h1>
       
