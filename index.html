@@ -300,7 +300,6 @@
     /* Screen 2: Final Message */
     #screen2 {
       display: none;
-      height: 100vh;
       min-height: 100vh;
       background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd4ea 100%);
       position: relative;
@@ -942,18 +941,12 @@
       <p>You have successfully confirmed that you are the love of my life</p>
 
       <button class="open-card-btn" id="openCardBtn">Open Card</button>
+      <button class="open-card-btn" id="openGiftBtn" style="margin-top: 15px;">Open Gift</button>
     </div>
 
     <!-- Gift Voucher Section -->
-    <div class="gift-section">
-      <div class="gift-intro" id="giftIntro">
-        <div class="gift-box">🎁</div>
-        <h1>Sydney, I have something for you...</h1>
-        <p class="subtitle">A little escape for just the two of us</p>
-        <button class="open-btn" id="openGiftBtn">Open Your Gift</button>
-      </div>
-
-      <div class="voucher-card" id="voucherCard">
+    <div class="gift-section" id="giftSection" style="display: none;">
+      <div class="voucher-card show" id="voucherCard">
         <div class="voucher-header">
           <h2>Couples Massage Voucher</h2>
           <p class="voucher-to">For Sydney ❤️</p>
@@ -1319,17 +1312,15 @@
 
     // ========== GIFT VOUCHER LOGIC ==========
     const openGiftBtn = document.getElementById('openGiftBtn');
-    const giftIntro = document.getElementById('giftIntro');
+    const giftSection = document.getElementById('giftSection');
     const voucherCard = document.getElementById('voucherCard');
     const spaOptions = document.querySelectorAll('.spa-option');
     const selectionStatus = document.getElementById('selectionStatus');
     const selectedSpaEl = document.getElementById('selectedSpa');
 
     openGiftBtn.addEventListener('click', () => {
-      giftIntro.classList.add('hidden');
-      setTimeout(() => {
-        voucherCard.classList.add('show');
-      }, 300);
+      giftSection.style.display = '';
+      giftSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
     spaOptions.forEach(option => {
