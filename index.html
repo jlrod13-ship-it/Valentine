@@ -543,6 +543,273 @@
       transform: scale(1.1);
     }
 
+    /* Gift Voucher Section */
+    .gift-section {
+      margin-top: 40px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    .gift-intro {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .gift-intro.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .gift-box {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: giftFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes giftFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .gift-section h1 {
+      font-size: 32px;
+      color: #d81b60;
+      margin-bottom: 15px;
+    }
+
+    .gift-section .subtitle {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .gift-section .open-btn {
+      background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%);
+      color: white;
+      border: none;
+      padding: 18px 40px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 77, 141, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .gift-section .open-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(255, 77, 141, 0.4);
+    }
+
+    /* Voucher Card */
+    .voucher-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+    }
+
+    .voucher-card.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: all;
+    }
+
+    .voucher-header {
+      border-bottom: 2px solid #ffe4ec;
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .voucher-header h2 {
+      font-size: 24px;
+      color: #d81b60;
+      margin-bottom: 8px;
+    }
+
+    .voucher-to {
+      font-size: 18px;
+      color: #666;
+    }
+
+    .voucher-body {
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    .voucher-body p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 25px;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .detail-item {
+      background: #fff5f7;
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    .detail-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #999;
+      margin-bottom: 5px;
+    }
+
+    .detail-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .spa-selection {
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 2px solid #ffe4ec;
+    }
+
+    .spa-selection h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .spa-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .spa-option {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      border: 2px solid #f0f0f0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .spa-option:hover {
+      border-color: #ff9bc0;
+      background: #fff5f7;
+    }
+
+    .spa-option.selected {
+      border-color: #ff1744;
+      background: #fff5f7;
+      box-shadow: 0 4px 12px rgba(255, 77, 141, 0.2);
+    }
+
+    .spa-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      background: white;
+      border: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .spa-logo img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+    }
+
+    .spa-info {
+      flex: 1;
+      text-align: left;
+    }
+
+    .spa-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .spa-desc {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .radio-check {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ddd;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .spa-option.selected .radio-check {
+      border-color: #ff1744;
+    }
+
+    .spa-option.selected .radio-check::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: #ff1744;
+      border-radius: 50%;
+    }
+
+    .voucher-footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #ffe4ec;
+      text-align: center;
+    }
+
+    .from-text {
+      font-size: 16px;
+      color: #666;
+      font-style: italic;
+    }
+
+    .selection-status {
+      margin-top: 15px;
+      padding: 12px;
+      background: #e8f5e9;
+      border-radius: 8px;
+      color: #2e7d32;
+      font-size: 14px;
+      display: none;
+    }
+
+    .selection-status.show {
+      display: block;
+    }
+
     /* Responsive */
     @media (max-width: 640px) {
       .big-heart {
@@ -579,6 +846,18 @@
 
       .final-content p {
         font-size: 18px;
+      }
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gift-section h1 {
+        font-size: 26px;
+      }
+
+      .voucher-card {
+        padding: 25px;
       }
     }
   </style>
@@ -663,6 +942,78 @@
       <p>You have successfully confirmed that you are the love of my life</p>
 
       <button class="open-card-btn" id="openCardBtn">Open Card</button>
+    </div>
+
+    <!-- Gift Voucher Section -->
+    <div class="gift-section">
+      <div class="gift-intro" id="giftIntro">
+        <div class="gift-box">🎁</div>
+        <h1>Sydney, I have something for you...</h1>
+        <p class="subtitle">A little escape for just the two of us</p>
+        <button class="open-btn" id="openGiftBtn">Open Your Gift</button>
+      </div>
+
+      <div class="voucher-card" id="voucherCard">
+        <div class="voucher-header">
+          <h2>Couples Massage Voucher</h2>
+          <p class="voucher-to">For Sydney ❤️</p>
+        </div>
+        <div class="voucher-body">
+          <p>
+            This voucher is for a relaxing 50-minute couples massage at your choice of spa in San Francisco.
+            A chance for us to unwind together and enjoy some peaceful time away from everything.
+          </p>
+          <div class="details-grid">
+            <div class="detail-item">
+              <div class="detail-label">Duration</div>
+              <div class="detail-value">50 Minutes</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Location</div>
+              <div class="detail-value">San Francisco</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Date</div>
+              <div class="detail-value">Your Choice</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">For</div>
+              <div class="detail-value">You & Me</div>
+            </div>
+          </div>
+          <div class="spa-selection">
+            <h3>Choose Your Spa:</h3>
+            <div class="spa-options">
+              <div class="spa-option" data-spa="SenSpa">
+                <div class="spa-logo">
+                  <img src="SENSPA.png" alt="SenSpa">
+                </div>
+                <div class="spa-info">
+                  <div class="spa-name">SenSpa</div>
+                  <div class="spa-desc">Calm, upscale escape</div>
+                </div>
+                <div class="radio-check"></div>
+              </div>
+              <div class="spa-option" data-spa="Kabuki Springs & Spa">
+                <div class="spa-logo">
+                  <img src="KABUKI.png" alt="Kabuki Springs">
+                </div>
+                <div class="spa-info">
+                  <div class="spa-name">Kabuki Springs & Spa</div>
+                  <div class="spa-desc">Classic SF spa vibes</div>
+                </div>
+                <div class="radio-check"></div>
+              </div>
+            </div>
+            <div class="selection-status" id="selectionStatus">
+              ✓ Perfect! I'll book <strong id="selectedSpa"></strong> for us
+            </div>
+          </div>
+        </div>
+        <div class="voucher-footer">
+          <p class="from-text">With love, Josh</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -965,6 +1316,31 @@
         document.body.style.overflow = '';
       }, 600);
     }
+
+    // ========== GIFT VOUCHER LOGIC ==========
+    const openGiftBtn = document.getElementById('openGiftBtn');
+    const giftIntro = document.getElementById('giftIntro');
+    const voucherCard = document.getElementById('voucherCard');
+    const spaOptions = document.querySelectorAll('.spa-option');
+    const selectionStatus = document.getElementById('selectionStatus');
+    const selectedSpaEl = document.getElementById('selectedSpa');
+
+    openGiftBtn.addEventListener('click', () => {
+      giftIntro.classList.add('hidden');
+      setTimeout(() => {
+        voucherCard.classList.add('show');
+      }, 300);
+    });
+
+    spaOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        spaOptions.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        const spaName = option.dataset.spa;
+        selectedSpaEl.textContent = spaName;
+        selectionStatus.classList.add('show');
+      });
+    });
 
     // ========== INIT ==========
     initCaptcha();
