@@ -811,6 +811,118 @@
       display: block;
     }
 
+    /* Gift Modal Overlay */
+    .gift-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .gift-overlay.active {
+      display: flex;
+    }
+
+    .gift-modal {
+      background: white;
+      border-radius: 20px;
+      width: 700px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .gift-tabs {
+      display: flex;
+      border-bottom: 2px solid #ffe4ec;
+      position: sticky;
+      top: 0;
+      background: white;
+      border-radius: 20px 20px 0 0;
+      z-index: 1;
+    }
+
+    .gift-tab {
+      flex: 1;
+      padding: 18px 20px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 16px;
+      font-weight: 600;
+      color: #999;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: none;
+    }
+
+    .gift-tab:hover {
+      color: #d81b60;
+      background: #fff5f7;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .gift-tab:focus {
+      outline: none;
+    }
+
+    .gift-tab.active {
+      color: #d81b60;
+      border-bottom-color: #ff1744;
+    }
+
+    .gift-tab-content {
+      display: none;
+      padding: 30px;
+    }
+
+    .gift-tab-content.active {
+      display: block;
+    }
+
+    .ravelry-image {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .close-gift-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      background: rgba(0, 0, 0, 0.1);
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      color: #666;
+      cursor: pointer;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      box-shadow: none;
+    }
+
+    .close-gift-btn:hover {
+      background: rgba(0, 0, 0, 0.2);
+      transform: scale(1.1);
+      box-shadow: none;
+    }
+
     /* Responsive */
     @media (max-width: 640px) {
       .big-heart {
@@ -946,67 +1058,84 @@
       <button class="open-card-btn" id="openGiftBtn" style="margin-top: 15px;">Open Gift</button>
     </div>
 
-    <!-- Gift Voucher Section -->
-    <div class="gift-section" id="giftSection" style="display: none;">
-      <div class="voucher-card show" id="voucherCard">
-        <div class="voucher-header">
-          <h2>Couples Massage Voucher</h2>
-          <p class="voucher-to">For Sydney ❤️</p>
-        </div>
-        <div class="voucher-body">
-          <p>
-            This voucher is for a relaxing 50-minute couples massage at your choice of spa in San Francisco.
-            A chance for us to unwind together and enjoy some peaceful time away from everything.
-          </p>
-          <div class="details-grid">
-            <div class="detail-item">
-              <div class="detail-label">Duration</div>
-              <div class="detail-value">50 Minutes</div>
-            </div>
-            <div class="detail-item">
-              <div class="detail-label">Location</div>
-              <div class="detail-value">San Francisco</div>
-            </div>
-            <div class="detail-item">
-              <div class="detail-label">Date</div>
-              <div class="detail-value">Your Choice</div>
-            </div>
-            <div class="detail-item">
-              <div class="detail-label">For</div>
-              <div class="detail-value">You & Me</div>
-            </div>
+  </div>
+
+  <!-- Gift Modal Overlay -->
+  <div class="gift-overlay" id="giftOverlay">
+    <div class="gift-modal">
+      <button class="close-gift-btn" id="closeGiftBtn">&times;</button>
+      <div class="gift-tabs">
+        <button class="gift-tab active" data-tab="ravelry">Ravelry Gift Card</button>
+        <button class="gift-tab" data-tab="spa">Spa Voucher</button>
+      </div>
+
+      <!-- Tab 1: Ravelry Gift Card -->
+      <div class="gift-tab-content active" id="tab-ravelry">
+        <img src="Ravelry.png" alt="Ravelry Gift Card" class="ravelry-image">
+      </div>
+
+      <!-- Tab 2: Spa Voucher -->
+      <div class="gift-tab-content" id="tab-spa">
+        <div class="voucher-card show" id="voucherCard">
+          <div class="voucher-header">
+            <h2>Couples Massage Voucher</h2>
+            <p class="voucher-to">For Sydney ❤️</p>
           </div>
-          <div class="spa-selection">
-            <h3>Choose Your Spa:</h3>
-            <div class="spa-options">
-              <div class="spa-option" data-spa="SenSpa">
-                <div class="spa-logo">
-                  <img src="SENSPA.png" alt="SenSpa">
-                </div>
-                <div class="spa-info">
-                  <div class="spa-name">SenSpa</div>
-                  <div class="spa-desc">Calm, upscale escape</div>
-                </div>
-                <div class="radio-check"></div>
+          <div class="voucher-body">
+            <p>
+              This voucher is for a relaxing 50-minute couples massage at your choice of spa in San Francisco.
+              A chance for us to unwind together and enjoy some peaceful time away from everything.
+            </p>
+            <div class="details-grid">
+              <div class="detail-item">
+                <div class="detail-label">Duration</div>
+                <div class="detail-value">50 Minutes</div>
               </div>
-              <div class="spa-option" data-spa="Kabuki Springs & Spa">
-                <div class="spa-logo">
-                  <img src="KABUKI.png" alt="Kabuki Springs">
-                </div>
-                <div class="spa-info">
-                  <div class="spa-name">Kabuki Springs & Spa</div>
-                  <div class="spa-desc">Classic SF spa vibes</div>
-                </div>
-                <div class="radio-check"></div>
+              <div class="detail-item">
+                <div class="detail-label">Location</div>
+                <div class="detail-value">San Francisco</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Date</div>
+                <div class="detail-value">Your Choice</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">For</div>
+                <div class="detail-value">You & Me</div>
               </div>
             </div>
-            <div class="selection-status" id="selectionStatus">
-              ✓ Perfect! I'll book <strong id="selectedSpa"></strong> for us
+            <div class="spa-selection">
+              <h3>Choose Your Spa:</h3>
+              <div class="spa-options">
+                <div class="spa-option" data-spa="SenSpa">
+                  <div class="spa-logo">
+                    <img src="SENSPA.png" alt="SenSpa">
+                  </div>
+                  <div class="spa-info">
+                    <div class="spa-name">SenSpa</div>
+                    <div class="spa-desc">Calm, upscale escape</div>
+                  </div>
+                  <div class="radio-check"></div>
+                </div>
+                <div class="spa-option" data-spa="Kabuki Springs & Spa">
+                  <div class="spa-logo">
+                    <img src="KABUKI.png" alt="Kabuki Springs">
+                  </div>
+                  <div class="spa-info">
+                    <div class="spa-name">Kabuki Springs & Spa</div>
+                    <div class="spa-desc">Classic SF spa vibes</div>
+                  </div>
+                  <div class="radio-check"></div>
+                </div>
+              </div>
+              <div class="selection-status" id="selectionStatus">
+                ✓ Perfect! I'll book <strong id="selectedSpa"></strong> for us
+              </div>
             </div>
           </div>
-        </div>
-        <div class="voucher-footer">
-          <p class="from-text">With love, Josh</p>
+          <div class="voucher-footer">
+            <p class="from-text">With love, Josh</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1308,17 +1437,48 @@
       }, 600);
     }
 
-    // ========== GIFT VOUCHER LOGIC ==========
+    // ========== GIFT MODAL LOGIC ==========
     const openGiftBtn = document.getElementById('openGiftBtn');
-    const giftSection = document.getElementById('giftSection');
-    const voucherCard = document.getElementById('voucherCard');
+    const giftOverlay = document.getElementById('giftOverlay');
+    const closeGiftBtn = document.getElementById('closeGiftBtn');
+    const giftTabs = document.querySelectorAll('.gift-tab');
+    const giftTabContents = document.querySelectorAll('.gift-tab-content');
     const spaOptions = document.querySelectorAll('.spa-option');
     const selectionStatus = document.getElementById('selectionStatus');
     const selectedSpaEl = document.getElementById('selectedSpa');
 
     openGiftBtn.addEventListener('click', () => {
-      giftSection.style.display = '';
-      giftSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      giftOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeGiftBtn.addEventListener('click', closeGiftModal);
+
+    giftOverlay.addEventListener('click', (e) => {
+      if (e.target === giftOverlay) {
+        closeGiftModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && giftOverlay.classList.contains('active')) {
+        closeGiftModal();
+      }
+    });
+
+    function closeGiftModal() {
+      giftOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Tab switching
+    giftTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        giftTabs.forEach(t => t.classList.remove('active'));
+        giftTabContents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      });
     });
 
     spaOptions.forEach(option => {
